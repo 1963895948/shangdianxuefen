@@ -10,7 +10,9 @@ from sklearn.preprocessing import StandardScaler
 def myliner():#线性回归预测房价
     lb = load_boston()#加载数据
     x_train, x_test, y_train, y_test = train_test_split(lb.data,lb.target,test_size=0.25)
-    #print(x_test,y_train)#数据分割
+    print(x_test,y_train)#数据分割
+    print(len(x_test))
+    print(y_test.shape)
     std_x = StandardScaler()#标准化
     x_train = std_x.fit_transform(x_train)
     x_test = std_x.transform(x_test)
@@ -84,18 +86,18 @@ def iterate(a,b,x,y,times):
     return a,b
 
 if __name__ == '__main__':
-    #myliner()
-    x = [13854, 12213, 11009, 10655, 9503]  # 程序员工资，顺序为北京，上海，杭州，深圳，广州
-    x = np.reshape(x, newshape=(5, 1)) / 10000.0
-    y = [21332, 20162, 19138, 18621, 18016]  # 算法工程师，顺序和上面一致
-    y = np.reshape(y, newshape=(5, 1)) / 10000.0
-    a,b = iterate(0,0,x,y,1)
-    a, b = iterate(a, b, x, y, 2)
-    a, b = iterate(a, b, x, y, 5)
-    a, b = iterate(a, b, x, y, 200)
-    a, b = iterate(a, b, x, y, 500)
-    a, b = iterate(a, b, x, y, 1000)
-    a, b = iterate(a, b, x, y, 10000)
-    sgd = SGDRegressor()
-    sgd.fit(x, y)
-    print(sgd.coef_)
+    myliner()
+    # x = [13854, 12213, 11009, 10655, 9503]  # 程序员工资，顺序为北京，上海，杭州，深圳，广州
+    # x = np.reshape(x, newshape=(5, 1)) / 10000.0
+    # y = [21332, 20162, 19138, 18621, 18016]  # 算法工程师，顺序和上面一致
+    # y = np.reshape(y, newshape=(5, 1)) / 10000.0
+    # a,b = iterate(0,0,x,y,1)
+    # a, b = iterate(a, b, x, y, 2)
+    # a, b = iterate(a, b, x, y, 5)
+    # a, b = iterate(a, b, x, y, 200)
+    # a, b = iterate(a, b, x, y, 500)
+    # a, b = iterate(a, b, x, y, 1000)
+    # a, b = iterate(a, b, x, y, 10000)
+    # sgd = SGDRegressor()
+    # sgd.fit(x, y)
+    # print(sgd.coef_)

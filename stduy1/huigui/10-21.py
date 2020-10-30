@@ -8,6 +8,7 @@ from sklearn.preprocessing import StandardScaler
 import pandas as pd
 
 
+
 def dummycoding(dataframe):
     dataframe_age = dataframe['age']
     dataframe_bmi = dataframe['bmi']
