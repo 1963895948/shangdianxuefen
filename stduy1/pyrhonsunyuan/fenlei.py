@@ -35,7 +35,7 @@ def knn():#相当于聚类，每有一个可划分数据就拿掉
         while(index != len(class_count_index)):
             for data_cell in data:
                 #print(distance(data[i][0],class_count_index[index][0],data[i][1],class_count_index[index][1]))
-                if(distance(data_cell[0],class_count_index[index][0],data_cell[1],class_count_index[index][1])< 50):
+                if(distance(data_cell[0],class_count_index[index][0],data_cell[1],class_count_index[index][1])< 20):
                     class_count_index.append(data.pop(data.index(data_cell)))
                     #print(len(data))
             index = index+1
@@ -80,7 +80,7 @@ def dbscan():#用标记做
 
 def dbscan_1():#用机器学习的包
     data = np.loadtxt("/Users/yuanxiaoguo/PycharmProjects/shangdianxuefen/stduy1/pyrhonsunyuan/data.txt")
-    db =DBSCAN(eps=50,min_samples=1).fit(data)
+    db =DBSCAN(eps=20,min_samples=1).fit(data)
     labels = db.labels_
     print(max(labels)+1)
     return None
