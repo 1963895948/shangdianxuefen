@@ -10,9 +10,10 @@ from sklearn.preprocessing import StandardScaler
 def myliner():#线性回归预测房价
     lb = load_boston()#加载数据
     x_train, x_test, y_train, y_test = train_test_split(lb.data,lb.target,test_size=0.25)
-    print(x_test,y_train)#数据分割
-    print(len(x_test))
-    print(y_test.shape)
+    print(x_train.shape)
+    print(len(x_train))
+    print(x_train[0])
+    print(y_train.shape)
     std_x = StandardScaler()#标准化
     x_train = std_x.fit_transform(x_train)
     x_test = std_x.transform(x_test)
@@ -23,7 +24,7 @@ def myliner():#线性回归预测房价
     y_test = std_y.transform(y_test.reshape(-1,1))
     print(y_test.shape)
 
-    print(x_train)
+    print(len(x_train[0]))
     lr = LinearRegression()#线性回归
     lr.fit(x_train,y_train)
     print(lr.coef_)

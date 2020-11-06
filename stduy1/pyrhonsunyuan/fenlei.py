@@ -17,25 +17,27 @@ def get_data():
             data_value_1.append(line[1])
             #print(data_value_1)
             data_value.append(data_value_1)
+    #data_value = sorted(data_value)
+    #print(data_value)
+    # data_value = data_value[0:1000]
     return data_value
 
 def distance(x1,x2,y1,y2):
     a = (float(x1)-float(x2))**2+(float(y1)-float(y2))**2
     return math.sqrt(a)
 
-def knn():#相当于聚类，每有一个可划分数据就拿掉
+def knn():#相当于聚类，每有一个可划分数据就拿掉，用时340ms
     data = get_data()
     class_count = []#类别
     while( len(data)!= 0):
         class_count_index = []
-        print(data[0])
         print('第%d类'%len(class_count))
         class_count_index.append(data.pop(0))
         index = 0
         while(index != len(class_count_index)):
             for data_cell in data:
                 #print(distance(data[i][0],class_count_index[index][0],data[i][1],class_count_index[index][1]))
-                if(distance(data_cell[0],class_count_index[index][0],data_cell[1],class_count_index[index][1])< 20):
+                if(distance(data_cell[0],class_count_index[index][0],data_cell[1],class_count_index[index][1])<= 50):
                     class_count_index.append(data.pop(data.index(data_cell)))
                     #print(len(data))
             index = index+1
@@ -54,7 +56,7 @@ def huatu():
     plt.show()
 
 
-def dbscan():#用标记做
+def my_2():#用标记做，用时720ms
     data = get_data()
     n = len(data)
     cluster = [-1]*n
@@ -78,12 +80,14 @@ def dbscan():#用标记做
         print(subdataset)
     return cluster
 
-def dbscan_1():#用机器学习的包
+def dbscan():#用机器学习的包，用时0.52ms
     data = np.loadtxt("/Users/yuanxiaoguo/PycharmProjects/shangdianxuefen/stduy1/pyrhonsunyuan/data.txt")
-    db =DBSCAN(eps=20,min_samples=1).fit(data)
+    db =DBSCAN(eps=50,min_samples=1).fit(data[0:1000])
     labels = db.labels_
     print(max(labels)+1)
     return None
+
+
 
 # start = time.perf_counter()
 # knn()
@@ -91,15 +95,16 @@ def dbscan_1():#用机器学习的包
 # print("Time used:",elapsed)
 
 
-#
 # start = time.perf_counter()
-# cluster = dbscan()
+# cluster = my_2()
 # print(cluster)
 # print(max(cluster))
 # elapsed = (time.perf_counter() - start)
 # print("Time used:",elapsed)
 
-start = time.perf_counter()
-dbscan_1()
-elapsed = (time.perf_counter() - start)
-print("Time used:",elapsed)
+# start = time.perf_counter()
+# dbscan()
+# elapsed = (time.perf_counter() - start)
+# print("Time used:",elapsed)
+
+
