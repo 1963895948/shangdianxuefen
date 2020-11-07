@@ -81,7 +81,7 @@ def my_2():#用标记做，用时720ms
     return cluster
 
 def dbscan():#用机器学习的包，用时0.52ms
-    data = np.loadtxt("/Users/yuanxiaoguo/PycharmProjects/shangdianxuefen/stduy1/pyrhonsunyuan/data.txt")
+    data = np.loadtxt("/Users/yuanxiaoguo/PycharmProjects/shangdianxuefen/datadaolun-zhangkaijun/pyrhonsunyuan/data.txt")
     db =DBSCAN(eps=50,min_samples=1).fit(data[0:1000])
     labels = db.labels_
     print(max(labels)+1)
