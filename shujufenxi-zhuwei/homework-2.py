@@ -82,14 +82,16 @@ print('方差',mean_squared_error(std_y.inverse_transform(y_test),std_y.inverse_
 X = list(  zip(*data_x) )
 X = np.array(X)
 print(X)
-pca = PCA(n_components=8)#pca降维
-newX=pca.fit_transform(X)
-print('数据降维',newX)
+for i in [5,6,7,8,9,10,11,12]:
+    pca = PCA(n_components=i)#pca降维
+    newX=pca.fit_transform(X)
+    #print('数据降维',newX)
 
-y_train = np.array(data_y).reshape(-1,1)
-rd1 = Ridge()
-rd.fit(newX, y_train)
-print('岭回归系数',rd.coef_)
+    y_train = np.array(data_y).reshape(-1,1)
+    rd1 = Ridge()
+    rd.fit(newX, y_train)
+    #print('岭回归系数',rd.coef_)
+    print('岭回归降维数：' + str(i) + '预测率', rd.score(newX, y_train))
 
 
 x_train = list(  zip(*data_x) )
@@ -98,5 +100,5 @@ y_train = np.array(data_y).reshape(-1,1)
 la = Lasso()
 la.fit(x_train,y_train)
 print('Lasso回归系数',la.coef_)
-print(la.score(x_train,y_train))
+print('预测率',la.score(x_train,y_train))
 
