@@ -1,5 +1,3 @@
-#coding:utf-8
-
 #导入matplotlib.pyplot,如果显示mo module,请自行安装
 import matplotlib.pyplot as plt
 
