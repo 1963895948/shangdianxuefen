@@ -167,7 +167,7 @@ def choosebestfeature(dataset):
         splitinfo  = dataset_entropy(dataset)
         infogain = baseentropy - newentropy
         infogainrate = infogain/splitinfo
-        print(splitinfo,baseentropy)
+        #print(splitinfo,baseentropy)
         if(infogainrate>bestinfogainrage):
             bestinfogainrage = infogainrate
             bestfeature = i

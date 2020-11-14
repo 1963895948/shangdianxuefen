@@ -1,6 +1,5 @@
 import math
 import time
-import matplotlib.pyplot as plt
 from sklearn.cluster import DBSCAN
 import numpy as np
 
@@ -47,13 +46,6 @@ def knn():#相当于聚类，每有一个可划分数据就拿掉，用时340ms
     return class_count
 
 
-def huatu():
-    data = get_data()
-    for i in data[0:10]:
-        print(i)
-        plt.scatter(i[0], i[1])
-    plt.show()
-    return None
 
 def my_2():#用标记做，用时720ms
     data = get_data()
@@ -81,7 +73,7 @@ def my_2():#用标记做，用时720ms
 
 def dbscan():#用机器学习的包，用时0.52ms
     data = np.loadtxt("data.txt")
-    db =DBSCAN(eps=50,min_samples=0).fit(data)
+    db =DBSCAN(eps=50,min_samples=0).fit(data[1:1000])
     labels = db.labels_
     print(max(labels)+1)
 
@@ -102,7 +94,7 @@ def merge_list(L):
 
     return [i for i in L if i != [-1]]
 
-def my_3():#用标记做，
+def my_3():#用标记做，倒转
     data = get_data()
     n = len(data)
     cluster = [-1]*n
@@ -149,17 +141,17 @@ def my_3():#用标记做，
     return None
 
 # start = time.perf_counter()
-# my_3()
+# knn()
 # elapsed = (time.perf_counter() - start)
 # print("Time used:",elapsed)
 
-
-start = time.perf_counter()
-cluster = my_2()
-print(cluster)
-print(max(cluster))
-elapsed = (time.perf_counter() - start)
-print("Time used:",elapsed)
+#
+# start = time.perf_counter()
+# cluster = my_2()
+# print(cluster)
+# print(max(cluster))
+# elapsed = (time.perf_counter() - start)
+# print("Time used:",elapsed)
 
 start = time.perf_counter()
 dbscan()
