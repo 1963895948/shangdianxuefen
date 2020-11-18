@@ -1,5 +1,5 @@
 from math import log
-
+from test import treehuatu
 def createDataSet():
     dataset = [['sunny', 'hot', 'high', 'FALSE', 'no'],
                ['sunny', 'hot', 'high', 'TRUE', 'no'],
@@ -116,3 +116,4 @@ if __name__ == '__main__':
     res = predict(tree,label,testdata)
     print(tree)
     print(res)
+    treehuatu.createPlot(tree)
