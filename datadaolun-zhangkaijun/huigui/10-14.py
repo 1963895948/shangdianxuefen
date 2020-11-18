@@ -87,18 +87,18 @@ def iterate(a,b,x,y,times):
     return a,b
 
 if __name__ == '__main__':
-    myliner()
-    # x = [13854, 12213, 11009, 10655, 9503]  # 程序员工资，顺序为北京，上海，杭州，深圳，广州
-    # x = np.reshape(x, newshape=(5, 1)) / 10000.0
-    # y = [21332, 20162, 19138, 18621, 18016]  # 算法工程师，顺序和上面一致
-    # y = np.reshape(y, newshape=(5, 1)) / 10000.0
-    # a,b = iterate(0,0,x,y,1)
-    # a, b = iterate(a, b, x, y, 2)
-    # a, b = iterate(a, b, x, y, 5)
-    # a, b = iterate(a, b, x, y, 200)
-    # a, b = iterate(a, b, x, y, 500)
-    # a, b = iterate(a, b, x, y, 1000)
-    # a, b = iterate(a, b, x, y, 10000)
-    # sgd = SGDRegressor()
-    # sgd.fit(x, y)
-    # print(sgd.coef_)
+    #myliner()
+    x = [13854, 12213, 11009, 10655, 9503]  # 程序员工资，顺序为北京，上海，杭州，深圳，广州
+    x = np.reshape(x, newshape=(5, 1)) / 10000.0
+    y = [21332, 20162, 19138, 18621, 18016]  # 算法工程师，顺序和上面一致
+    y = np.reshape(y, newshape=(5, 1)) / 10000.0
+    a,b = iterate(0,0,x,y,1)
+    a, b = iterate(a, b, x, y, 2)
+    a, b = iterate(a, b, x, y, 5)
+    a, b = iterate(a, b, x, y, 200)
+    a, b = iterate(a, b, x, y, 500)
+    a, b = iterate(a, b, x, y, 1000)
+    a, b = iterate(a, b, x, y, 10000)
+    sgd = SGDRegressor()
+    sgd.fit(x, y)
+    print(sgd.coef_)

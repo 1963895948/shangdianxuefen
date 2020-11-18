@@ -205,5 +205,5 @@ def fires_plus_1():
 
 
 if __name__ == '__main__':
-    data()
-    #fires_plus_1()
+    #data()
+    fires_plus_1()

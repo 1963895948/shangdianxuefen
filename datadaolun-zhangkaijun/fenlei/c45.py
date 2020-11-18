@@ -127,10 +127,10 @@ def createDataSet():
 
                ]
 
-    #dataset = pd.read_csv('credit.csv').values.tolist()
+    dataset = pd.read_csv('credit.csv').values.tolist()
 
     labels = ['outlook', 'temperature','humidity','windy']
-    #labels = ["checking_balance","months_loan_duration","credit_history","purpose","amount","savings_balance","employment_length","installment_rate","personal_status","other_debtors","residence_history","property","age","installment_plan","housing","existing_credits","job","dependents","telephone","foreign_worker"]
+    labels = ["checking_balance","months_loan_duration","credit_history","purpose","amount","savings_balance","employment_length","installment_rate","personal_status","other_debtors","residence_history","property","age","installment_plan","housing","existing_credits","job","dependents","telephone","foreign_worker"]
     # change to discrete values
     return dataset, labels
 

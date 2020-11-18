@@ -3,9 +3,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn import metrics
 
-
-
-
 breast_cancer = pd.read_csv("wisc_bc_data.csv")
 print (breast_cancer.shape)
 del breast_cancer["id"]
