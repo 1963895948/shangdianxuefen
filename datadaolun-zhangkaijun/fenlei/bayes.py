@@ -1,4 +1,3 @@
-
 from sklearn.datasets import load_boston,fetch_20newsgroups
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
