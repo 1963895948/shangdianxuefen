@@ -1,0 +1,2 @@
+print(0xA<<2)
+print(0xA)
