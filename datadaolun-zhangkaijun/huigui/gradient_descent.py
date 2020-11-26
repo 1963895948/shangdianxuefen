@@ -27,7 +27,6 @@ while True:
     else:
         cost = newcost
 
-
 print(a,b,c)
 print(count)
 #1049140
