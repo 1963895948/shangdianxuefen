@@ -22,6 +22,7 @@ while True:
         newcost += ((y[i]-a*x[i][0]-b*x[i][1]-c*x[i][2]))**2
     newcost /=num
     count+=1
+    print(count)
     if(abs(cost-newcost)<threshold):
         break
     else:
