@@ -11,11 +11,11 @@ from sklearn.preprocessing import StandardScaler
 import random
 
 def data():
-    x_data = pd.read_csv('forestfires.csv',usecols=[0,1,2,3,4,5,6,7,8,9,10]).values
+    x_data = pd.read_csv('forestfires.csv', usecols=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).values
     print(x_data)
     y_data = pd.read_csv('forestfires.csv', usecols=[12]).values
     #print(x_data[0:int(len(x_data)*0.75)])
-    time_str = pd.read_csv('forestfires.csv', usecols=[2,3])
+    time_str = pd.read_csv('forestfires.csv', usecols=[2, 3])
     # 将文字特征转化为数字
     for i in range(len(x_data)):
         #print(x_test.values[i])
@@ -65,11 +65,11 @@ def data():
     return None
 
 def fires_plus():
-    x_data = pd.read_csv('forestfires.csv',usecols=[0,1,2,3,4,5,6,7,8,9,10]).values
+    x_data = pd.read_csv('forestfires.csv', usecols=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).values
     #print(x_data)
     y_data = pd.read_csv('forestfires.csv', usecols=[12]).values
     #print(x_data[0:int(len(x_data)*0.75)])
-    time_str = pd.read_csv('forestfires.csv', usecols=[2,3])
+    time_str = pd.read_csv('forestfires.csv', usecols=[2, 3])
     # 将文字特征转化为数字
     for i in range(len(x_data)):
         #print(x_test.values[i])
@@ -135,11 +135,11 @@ def fires_plus():
     return None
 
 def fires_plus_1():
-    x_data = pd.read_csv('forestfires.csv',usecols=[0,1,2,3,4,5,6,7,8,9,10]).values
+    x_data = pd.read_csv('forestfires.csv', usecols=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).values
     #print(x_data)
     y_data = pd.read_csv('forestfires.csv', usecols=[12]).values
     #print(x_data[0:int(len(x_data)*0.75)])
-    time_str = pd.read_csv('forestfires.csv', usecols=[2,3])
+    time_str = pd.read_csv('forestfires.csv', usecols=[2, 3])
     # 将文字特征转化为数字
     for i in range(len(x_data)):
         #print(x_test.values[i])

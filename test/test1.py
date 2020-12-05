@@ -1,145 +1,120 @@
 
-from collections import Counter, defaultdict
+# Code source: Gaël Varoquaux
+#              Andreas Müller
+# Modified for documentation by Jaques Grobler
+# License: BSD 3 clause
 
 import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.colors import ListedColormap
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.datasets import make_moons, make_circles, make_classification
+from sklearn.neural_network import MLPClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+from sklearn.gaussian_process import GaussianProcessClassifier
+from sklearn.gaussian_process.kernels import RBF
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 
+h = .02  # step size in the mesh
 
-class node:
-    def __init__(self, fea=-1, val=None, res=None, right=None, left=None):
-        self.fea = fea  # 特征
-        self.val = val  # 特征对应的值
-        self.res = res  # 叶节点标记
-        self.right = right
-        self.left = left
+names = ["Nearest Neighbors", "Linear SVM", "RBF SVM", "Gaussian Process",
+         "Decision Tree", "Random Forest", "Neural Net", "AdaBoost",
+         "Naive Bayes", "QDA"]
 
+classifiers = [
+    KNeighborsClassifier(3),
+    SVC(kernel="linear", C=0.025),
+    SVC(gamma=2, C=1),
+    GaussianProcessClassifier(1.0 * RBF(1.0)),
+    DecisionTreeClassifier(max_depth=5),
+    RandomForestClassifier(max_depth=5, n_estimators=10, max_features=1),
+    MLPClassifier(alpha=1, max_iter=1000),
+    AdaBoostClassifier(),
+    GaussianNB(),
+    QuadraticDiscriminantAnalysis()]
 
-class CART_CLF:
-    def __init__(self, epsilon=1e-3, min_sample=1):
-        self.epsilon = epsilon
-        self.min_sample = min_sample  # 叶节点含有的最少样本数
-        self.tree = None
+X, y = make_classification(n_features=2, n_redundant=0, n_informative=2,
+                           random_state=1, n_clusters_per_class=1)
+rng = np.random.RandomState(2)
+X += 2 * rng.uniform(size=X.shape)
+linearly_separable = (X, y)
 
-    def getGini(self, y_data):
-        # 计算基尼指数
-        c = Counter(y_data)
-        return 1 - sum([(val / y_data.shape[0]) ** 2 for val in c.values()])
+datasets = [make_moons(noise=0.3, random_state=0),
+            make_circles(noise=0.2, factor=0.5, random_state=1),
+            linearly_separable
+            ]
 
-    def getFeaGini(self, set1, set2):
-        # 计算某个特征及相应的某个特征值组成的切分节点的基尼指数
-        num = set1.shape[0] + set2.shape[0]
-        return set1.shape[0] / num * self.getGini(set1) + set2.shape[0] / num * self.getGini(set2)
+figure = plt.figure(figsize=(27, 9))
+i = 1
+# iterate over datasets
+for ds_cnt, ds in enumerate(datasets):
+    # preprocess dataset, split into training and test part
+    X, y = ds
+    X = StandardScaler().fit_transform(X)
+    X_train, X_test, y_train, y_test = \
+        train_test_split(X, y, test_size=.4, random_state=42)
 
-    def bestSplit(self, splits_set, X_data, y_data):
-        # 返回所有切分点的基尼指数，以字典形式存储。键为split，是一个元组，第一个元素为最优切分特征，第二个为该特征对应的最优切分值
-        pre_gini = self.getGini(y_data)
-        subdata_inds = defaultdict(list)  # 切分点以及相应的样本点的索引
-        for split in splits_set:
-            for ind, sample in enumerate(X_data):
-                if sample[split[0]] == split[1]:
-                    subdata_inds[split].append(ind)
-        min_gini = 1
-        best_split = None
-        best_set = None
-        for split, data_ind in subdata_inds.items():
-            set1 = y_data[data_ind]  # 满足切分点的条件，则为左子树
-            set2_inds = list(set(range(y_data.shape[0])) - set(data_ind))
-            set2 = y_data[set2_inds]
-            if set1.shape[0] < 1 or set2.shape[0] < 1:
-                continue
-            now_gini = self.getFeaGini(set1, set2)
-            if now_gini < min_gini:
-                min_gini = now_gini
-                best_split = split
-                best_set = (data_ind, set2_inds)
-        if abs(pre_gini - min_gini) < self.epsilon:  # 若切分后基尼指数下降未超过阈值则停止切分
-            best_split = None
-        return best_split, best_set, min_gini
+    x_min, x_max = X[:, 0].min() - .5, X[:, 0].max() + .5
+    y_min, y_max = X[:, 1].min() - .5, X[:, 1].max() + .5
+    xx, yy = np.meshgrid(np.arange(x_min, x_max, h),
+                         np.arange(y_min, y_max, h))
 
-    def buildTree(self, splits_set, X_data, y_data):
-        if y_data.shape[0] < self.min_sample:  # 数据集小于阈值直接设为叶节点
-            return node(res=Counter(y_data).most_common(1)[0][0])
-        best_split, best_set, min_gini = self.bestSplit(splits_set, X_data, y_data)
-        if best_split is None:  # 基尼指数下降小于阈值，则终止切分，设为叶节点
-            return node(res=Counter(y_data).most_common(1)[0][0])
+    # just plot the dataset first
+    cm = plt.cm.RdBu
+    cm_bright = ListedColormap(['#FF0000', '#0000FF'])
+    ax = plt.subplot(len(datasets), len(classifiers) + 1, i)
+    if ds_cnt == 0:
+        ax.set_title("Input data")
+    # Plot the training points
+    ax.scatter(X_train[:, 0], X_train[:, 1], c=y_train, cmap=cm_bright,
+               edgecolors='k')
+    # Plot the testing points
+    ax.scatter(X_test[:, 0], X_test[:, 1], c=y_test, cmap=cm_bright, alpha=0.6,
+               edgecolors='k')
+    ax.set_xlim(xx.min(), xx.max())
+    ax.set_ylim(yy.min(), yy.max())
+    ax.set_xticks(())
+    ax.set_yticks(())
+    i += 1
+
+    # iterate over classifiers
+    for name, clf in zip(names, classifiers):
+        ax = plt.subplot(len(datasets), len(classifiers) + 1, i)
+        clf.fit(X_train, y_train)
+        score = clf.score(X_test, y_test)
+
+        # Plot the decision boundary. For that, we will assign a color to each
+        # point in the mesh [x_min, x_max]x[y_min, y_max].
+        if hasattr(clf, "decision_function"):
+            Z = clf.decision_function(np.c_[xx.ravel(), yy.ravel()])
         else:
-            splits_set.remove(best_split)
-            left = self.buildTree(splits_set, X_data[best_set[0]], y_data[best_set[0]])
-            right = self.buildTree(splits_set, X_data[best_set[1]], y_data[best_set[1]])
-            return node(fea=best_split[0], val=best_split[1], right=right, left=left)
+            Z = clf.predict_proba(np.c_[xx.ravel(), yy.ravel()])[:, 1]
 
-    def fit(self, X_data, y_data):
-        # 训练模型，CART分类树与ID3最大的不同是，CART建立的是二叉树，每个节点是特征及其对应的某个值组成的元组
-        # 特征可以多次使用
-        splits_set = []
-        for fea in range(X_data.shape[1]):
-            unique_vals = np.unique(X_data[:, fea])
-            if unique_vals.shape[0] < 2:
-                continue
-            elif unique_vals.shape[0] == 2:  # 若特征取值只有2个，则只有一个切分点，非此即彼
-                splits_set.append((fea, unique_vals[0]))
-            else:
-                for val in unique_vals:
-                    splits_set.append((fea, val))
-        self.tree = self.buildTree(splits_set, X_data, y_data)
-        return
+        # Put the result into a color plot
+        Z = Z.reshape(xx.shape)
+        ax.contourf(xx, yy, Z, cmap=cm, alpha=.8)
 
-    def predict(self, x):
-        def helper(x, tree):
-            if tree.res is not None:  # 表明到达叶节点
-                return tree.res
-            else:
-                if x[tree.fea] == tree.val:  # "是" 返回左子树
-                    branch = tree.left
-                else:
-                    branch = tree.right
-                return helper(x, branch)
+        # Plot the training points
+        ax.scatter(X_train[:, 0], X_train[:, 1], c=y_train, cmap=cm_bright,
+                   edgecolors='k')
+        # Plot the testing points
+        ax.scatter(X_test[:, 0], X_test[:, 1], c=y_test, cmap=cm_bright,
+                   edgecolors='k', alpha=0.6)
 
-        return helper(x, self.tree)
+        ax.set_xlim(xx.min(), xx.max())
+        ax.set_ylim(yy.min(), yy.max())
+        ax.set_xticks(())
+        ax.set_yticks(())
+        if ds_cnt == 0:
+            ax.set_title(name)
+        ax.text(xx.max() - .3, yy.min() + .3, ('%.2f' % score).lstrip('0'),
+                size=15, horizontalalignment='right')
+        i += 1
 
-    def disp_tree(self):
-        # 打印树
-        self.disp_helper(self.tree)
-        return
-
-    def disp_helper(self, current_node):
-        # 前序遍历
-        print(current_node.fea, current_node.val, current_node.res)
-        if current_node.res is not None:
-            return
-        self.disp_helper(current_node.left)
-        self.disp_helper(current_node.right)
-        return
-
-
-def validate(X_data, y_data, ratio=0.15):
-    N = X_data.shape[0]
-    size = int(N * ratio)
-    inds = np.random.permutation(range(N))
-    for i in range(int(N / size)):
-        test_ind = inds[i * size:(i + 1) * size]
-        train_ind = list(set(range(N))-set(test_ind))
-        yield X_data[train_ind], y_data[train_ind], X_data[test_ind], y_data[test_ind]
-
-
-if __name__ == '__main__':
-    from sklearn.datasets import load_iris
-
-    X_data = load_iris().data
-    y_data = load_iris().target
-
-
-    import time
-    start = time.clock()
-
-    g = validate(X_data, y_data, ratio=0.2)
-    for item in g:
-        X_data_train, y_data_train, X_data_test, y_data_test = item
-        clf = CART_CLF()
-        clf.fit(X_data_train, y_data_train)
-        score = 0
-        clf.disp_tree()
-        for X, y in zip(X_data_test,y_data_test):
-            if clf.predict(X) == y:
-                score += 1
-        print(score / len(y_data_test))
-    print(time.clock() - start)
+plt.tight_layout()
+plt.show()

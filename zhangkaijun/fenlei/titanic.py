@@ -21,6 +21,7 @@ def descion():
     #one-hat编码
     dict = DictVectorizer(sparse=False)
     x_train = dict.fit_transform(x_train.to_dict(orient="records"))#将每一行提取出来形成字典
+    print(x_train)
     x_test = dict.transform(x_test.to_dict(orient="records"))
     print(x_train)
     dectree = DecisionTreeClassifier()
@@ -37,4 +38,6 @@ def descion():
 
     graph = pydotplus.graph_from_dot_data(dot_data)
     graph.write_pdf('titanic.pdf')
+
+
 descion()

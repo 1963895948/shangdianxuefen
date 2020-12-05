@@ -10,8 +10,8 @@ import random
 
 
 def jianhang():
-    x_data = pd.read_csv('insurance.csv',usecols=[0,2]).values#读取数据 ,usecols为指定读取列数
-    y_data = pd.read_csv('insurance.csv',usecols=[6]).values
+    x_data = pd.read_csv('insurance.csv', usecols=[0, 2]).values#读取数据 ,usecols为指定读取列数
+    y_data = pd.read_csv('insurance.csv', usecols=[6]).values
 
     randnum = random.randint(0, len(x_data))  # 随机选取，打乱
     random.seed(randnum)

@@ -28,7 +28,7 @@ def liner():
     return None
 
 def data():
-    x_test = pd.read_csv('forestfires.csv',usecols=[0,4,5,6,7,8,9,10])
+    x_test = pd.read_csv('forestfires.csv', usecols=[0, 4, 5, 6, 7, 8, 9, 10])
     y_test = pd.read_csv('forestfires.csv', usecols=[1])
     print(x_test[0:int(len(x_test)*0.75)])
 

@@ -13,8 +13,8 @@ import random
 
 
 def bike():
-    x_data = pd.read_csv('hour.csv',usecols=[8,10,11,12]).values
-    y_data = pd.read_csv('hour.csv',usecols=[15]).values
+    x_data = pd.read_csv('hour.csv', usecols=[8, 10, 11, 12]).values
+    y_data = pd.read_csv('hour.csv', usecols=[15]).values
     # print(x_data)
     # print(y_data)
 
